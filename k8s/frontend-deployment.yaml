@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: medicore-frontend
-          image: asia-south1-docker.pkg.dev/gcp-devops-learning-514003/medicore-repo/medicore-frontend:v1
+          image: asia-south1-docker.pkg.dev/gcp-devops-learning-514003/medicore-repo/medicore-frontend:4
           ports:
             - containerPort: 80
           resources:
