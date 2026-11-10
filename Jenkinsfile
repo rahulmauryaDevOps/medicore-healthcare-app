@@ -104,6 +104,16 @@ stage('Quality Gate') {
         }
     }
 }
+        
+stage('Kubernetes Manifest Security Scan') {
+    steps {
+        sh '''
+            echo "Scanning Kubernetes manifests..."
+            trivy config --exit-code 1 --severity HIGH,CRITICAL k8s/
+        '''
+    }
+}
+
         stage('Push GitOps Changes') {
             steps {
                 withCredentials([usernamePassword(
