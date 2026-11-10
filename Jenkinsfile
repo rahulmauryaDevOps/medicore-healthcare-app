@@ -93,3 +93,16 @@ pipeline {
         }
     }
 }
+stage('Trivy Security Scan') {
+    steps {
+        sh '''
+            echo "Scanning Backend Image..."
+            trivy image --exit-code 1 --severity CRITICAL \
+            $BACKEND_IMAGE:$BUILD_NUMBER
+
+            echo "Scanning Frontend Image..."
+            trivy image --exit-code 1 --severity CRITICAL \
+            $FRONTEND_IMAGE:$BUILD_NUMBER
+        '''
+    }
+}
