@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: patient-service
-          image: asia-south1-docker.pkg.dev/gcp-devops-learning-514003/medicore-repo/patient-service:v3
+          image: asia-south1-docker.pkg.dev/gcp-devops-learning-514003/medicore-repo/patient-service:2
           ports:
             - containerPort: 8080
           resources:
