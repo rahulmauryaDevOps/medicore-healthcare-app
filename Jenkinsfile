@@ -20,15 +20,16 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                        -Dsonar.projectKey=MediCore-Healthcare
-                    '''
-                }
-            }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh '''
+                ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
+                -Dsonar.projectKey=MediCore-Healthcare \
+                -Dsonar.sources=src/main/java,frontend/src
+            '''
         }
+    }
+}
 
         stage('Frontend Build and Test') {
             steps {
