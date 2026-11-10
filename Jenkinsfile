@@ -12,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Backend Build and Test') {
             steps {
                 sh './mvnw clean package'
@@ -34,6 +35,20 @@ pipeline {
                 sh '''
                     docker build -t $BACKEND_IMAGE:$BUILD_NUMBER .
                     docker build -t $FRONTEND_IMAGE:$BUILD_NUMBER ./frontend
+                '''
+            }
+        }
+
+        stage('Trivy Security Scan') {
+            steps {
+                sh '''
+                    echo "Scanning Backend Image..."
+                    trivy image --exit-code 1 --severity CRITICAL \
+                    $BACKEND_IMAGE:$BUILD_NUMBER
+
+                    echo "Scanning Frontend Image..."
+                    trivy image --exit-code 1 --severity CRITICAL \
+                    $FRONTEND_IMAGE:$BUILD_NUMBER
                 '''
             }
         }
@@ -93,16 +108,4 @@ pipeline {
         }
     }
 }
-stage('Trivy Security Scan') {
-    steps {
-        sh '''
-            echo "Scanning Backend Image..."
-            trivy image --exit-code 1 --severity CRITICAL \
-            $BACKEND_IMAGE:$BUILD_NUMBER
 
-            echo "Scanning Frontend Image..."
-            trivy image --exit-code 1 --severity CRITICAL \
-            $FRONTEND_IMAGE:$BUILD_NUMBER
-        '''
-    }
-}
