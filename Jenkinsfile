@@ -19,6 +19,17 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        ./mvnw sonar:sonar \
+                        -Dsonar.projectKey=MediCore-Healthcare
+                    '''
+                }
+            }
+        }
+
         stage('Frontend Build and Test') {
             steps {
                 dir('frontend') {
